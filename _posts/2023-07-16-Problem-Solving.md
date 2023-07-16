@@ -19,17 +19,17 @@ layout: post
 - 문제 요약: 정점 $$N$$개, 간선 $$E$$개인 그래프가 입력으로 주어질 때, 다음의 질의 $$P$$개를 해결하라:
     - 수 $$M$$개가 주어질 때, 그 $$M$$개의 정점만을 통해 갈 수 있는 정점들을 하나의 그룹으로 만들자. 이때 그룹의 개수를 출력하라.
 - 제약 조건
-    - $$1≤N≤10^5$$
-    - $$0≤E≤10^5$$
-    - $$1≤P≤10^5$$
-    - $$1≤M≤N$$
-    - $$\sum M ≤ 10^5$$
+    - $1≤N≤10^5$
+    - $0≤E≤10^5$
+    - $1≤P≤10^5$
+    - $1≤M≤N$
+    - $\sum M ≤ 10^5$
 
 ## 만점 풀이
 
 기본적으로 분리 집합(disjoint set)을 사용해야 함을 쉽게 떠올릴 수 있다. 이제 문제는 시간 복잡되인데, 분리 집합을 사용하기 위해 $$M$$개의 정점들끼리의 연결 관계를 직접 구한다면 적어도 $$O(M^2)$$의 시간이 필요하므로 TLE가 나게 된다. 이를 해결할 수 있는 방법을 생각해보자.
 
-먼저, $$M$$개의 정점 목록에 속하는 어떤 정점 $$V$$에 대해 나머지 $$M-1$$개의 정점이 연결되어 있는지 판단하는 알고리즘을 생각해보자. 그 전에, $$|V|$$는 정점 $$V$$와 연결된 정점의 수이다.
+먼저, $$M$$개의 정점 목록에 속하는 어떤 정점 $$V$$에 대해 나머지 $$M-1$$개의 정점이 연결되어 있는지 판단하는 알고리즘을 생각해보자. 그 전에, $$\|V\|$$는 정점 $$V$$와 연결된 정점의 수이다.
 
 - 알고리즘 1: $$V$$와 연결된 정점을 `ch` 배열에 마킹한 후, 나머지 $$M-1$$개의 정점의 `ch` 값이 1인지 확인한다. 시간복잡도는 $$O(M+|V|)$$이다.
 - 알고리즘 2: $$V$$와 연결된 각각의 정점에 대해, 나머지 $$M-1$$개의 정점에 포함되어 있는지 이분탐색을 통해 확인한다. 이를 위해 $$M$$개의 정점을 번호 순으로 정렬한다. 시간복잡도는 $$O(|V|\log M)$$이다.
@@ -176,3 +176,90 @@ int main() {
 이제 시간복잡도를 논의해보자. 노끈을 매칭하는 과정의 시간복잡도가 자식 노드의 수 $$m$$에 대해 $$O(m^2)$$이므로 한번 DFS에 시간복잡도는 최악의 경우 $$O(n^2)$$이다. 따라서 최악 시간복잡도는 $$O(n^2 \log n)$$임을 알 수 있다. (parametric search에서 가능한 답의 범위가 $$O(n)$$ 스케일)
 
 $$n=10^4$$에 대해 애매한 시간복잡도지만 각 한번의 반복의 연산량이 많지 않고, 매칭된 경우 넘어가기 때문에 실제 시간은 그렇게 오래 걸리지 않는다. 실제 $$n=10^4$$일 때 최악의 경우 실행 시간은 500ms 정도이므로 문제가 되지 않으며, 실제 데이터는 약해 20ms 이내의 시간으로 AC를 받을 수 있다.
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+int n, deg[10101];
+vector<int> adj[10101];
+
+int cnt = 0, ans = 0;
+int DFS(int v, int prev, int d) {
+    vector<int> ret;
+    for (int i = 0; i < adj[v].size(); i++) {
+        int next = adj[v][i];
+        if (next == prev) continue;
+        ret.push_back(DFS(next, v, d) + 1);
+    }
+    sort(ret.begin(), ret.end());
+    int ch[10101], res = 1e9;
+    for (int i = 0; i < ret.size(); i++) ch[i] = 0;
+    for (int i = ret.size() - 1; i >= 0; i--) {
+        if (ch[i] == 1) continue;
+        if (ret[i] == d) {
+            ch[i] = 1;
+            cnt++;
+            continue;
+        }
+        for (int j = i - 1; j >= 0; j--) {
+            if (ch[j] == 1) continue;
+            if (ret[i] + ret[j] <= d) {
+                ch[i] = 1;
+                ch[j] = 1;
+                cnt++;
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < ret.size(); i++) {
+        if (ch[i] == 0) {
+            cnt++;
+            res = min(res, ret[i]);
+        }
+    }
+    if (res == 1e9) {
+        return 0;
+    }
+    else {
+        cnt--;
+        return res;
+    }
+}
+
+bool solve(int d) {
+    cnt = 0;
+    if (DFS(1, 0, d) > 0) cnt++;
+    //cout << d << " " << cnt << "\n";
+    return cnt == ans;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> n;
+    for (int i = 1; i < n; i++) {
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+        deg[a]++;
+        deg[b]++;
+    }
+
+    for (int i = 1; i <= n; i++) ans += (deg[i] - 1) / 2;
+    ans++;
+    cout << ans << "\n";
+
+    int st = 1, ed = n - 1;
+    while (st < ed) {
+        int mid = (st + ed) / 2;
+        if (solve(mid)) ed = mid;
+        else st = mid + 1;
+    }
+    cout << st << "\n";
+
+    return 0;
+}
+```
