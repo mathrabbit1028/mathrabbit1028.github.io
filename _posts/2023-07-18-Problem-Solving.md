@@ -1,0 +1,394 @@
+---
+title:  "2023-07-18 Problem Solving"
+mathjax: true
+layout: post
+---
+
+2023-07-18 Problem Solving 일지
+
+문제 번호: 15245(P2), 20023(D4)
+
+
+## 문제 개요
+
+- 문제 번호: 15245번 (https://www.acmicpc.net/problem/15245)
+- 문제 제목: Boom!
+- 문제 출처: AIPO 2017 National Finals 8번
+- 난이도: P2
+- 알고리즘: `#dp #combinatorics`
+- 풀이 시간: 53분
+- 문제 요약: 화학물질로 코팅된 길이 $N$의 테이프를 생각하자. 아랫면에는 모두 코팅이 되어 있고, 윗면은 왼쪽 $A$개와 오른쪽 $B$개만 코팅되어 있다. 화학물질 코팅이 닿지 않도록 접을 수 있는 방법의 수 $10301$로 나눈 나머지를 구하라. 단, 처음 상태도 한 가지로 센다.
+- 제약 조건
+    - $1≤N≤1000$이다.
+    - $A$와 $B$는 모두 $0$보다 큰 정수이며, $A+B≤N$
+
+## 만점 풀이
+
+점화식을 세우기 앞서 진행되어야 할 주요 관찰은 다음과 같다.
+
+> 관찰 1. 아래쪽으로 접는 것은 불가능하다. 접는 것은 위쪽으로만 가능하다.
+> 
+
+> 관찰 2. 끝에 $k$개의 연속된 위쪽 코팅이 있는 경우 $k$개 이상 접어야만 한다. 또한, 접은 개수가 $k ^ \prime$개라면 다시 끝에 $k^\prime$개의 연속된 위쪽 코팅이 생긴다.
+> 
+
+이를 바탕으로 한 끝에 위쪽 코팅 개수가 $k$개이고 길이가 $N$인 테이프에서 접는 방법의 수를 계산할 수 있다.
+
+- 정의: $dp_{k,x}$를 마지막으로 접은 개수가 $k$개이고, 현재 위쪽 코팅의 위치가 $x$번째까지 와 있을 때 접는 방법의 수. 여기서 위치는 **제일 처음 테이프의 첫 칸** 기준이다.
+- 초기값: $dp_{k, k}=1$, 나머지는 모두 $0$
+- 점화식
+
+$$
+dp_{k,x}=\sum_{k^\prime=0}^{k} {dp_{k^\prime,x-2k+k^\prime}}
+$$
+
+$x-2k+k^\prime \geq 0$을 만족하는 경우에 대해서만 계산하므로 $k≤x$일 때만 $dp_{k, x}$가 양수이며, 고로 고려해야 할 $dp$ 테이블의 범위는 $k≤x≤N$이다. 따라서 상태의 수가 $O(N^2)$개, 한 상태를 계산하는데 $O(N)$의 시간이 필요하므로 전체 시간복잡도는 $O(N^3)$이다.
+
+이제 계산된 $dp$ 테이블을 이용해 양끝에 위쪽 코팅이 있는 경우를 구하자. 왼쪽에서부터 접은 테이프가 사용한 길이와 오른쪽에서부터 접은 테이프가 사용한 길이의 합이 $N$ 이하이므로 자명하게 아래와 같은 식을 얻을 수 있다.
+
+$$
+\textrm{answer}= \sum_{i+j<=N}{dp_{:, a} \cdot dp_{:, j}}
+$$
+
+콜론은 배열 슬라이싱이다. 즉, $dp_{:, x}=\sum_{k=0}^N {dp_{k, x}}$이다.
+
+이 과정을 코드로 구현하면 AC를 받는다. 하지만 $O(N^3)$의 시간복잡도를 갖기 때문에 약 1초 정도 소요된다.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MOD = 10301;
+int n, a, b;
+int dp[1010][1010], lt[1010], rt[1010], ans = 0;
+
+int main() {
+    cin >> n >> a >> b;
+
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            dp[i][j] = 0;
+        }
+    }
+    dp[a][a] = 1;
+    for (int x = a + 1; x <= n; x++) {
+        for (int p = a; p <= x; p++) {
+            for (int q = 0; q <= p; q++) {
+                if (x - 2 * p + q >= 0) dp[p][x] = (dp[p][x] + dp[q][x - 2 * p + q]) % MOD;
+            }
+        }
+    }
+    for (int x = a; x <= n; x++) {
+        for (int p = 0; p <= x; p++) lt[x] = (lt[x] + dp[p][x]) % MOD;
+    }
+
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            dp[i][j] = 0;
+        }
+    }
+    dp[b][b] = 1;
+    for (int x = b + 1; x <= n; x++) {
+        for (int p = b; p <= x; p++) {
+            for (int q = 0; q <= p; q++) {
+                if (x - 2 * p + q >= 0) dp[p][x] = (dp[p][x] + dp[q][x - 2 * p + q]) % MOD;
+            }
+        }
+    }
+    for (int x = b; x <= n; x++) {
+        for (int p = 0; p <= x; p++) rt[x] = (rt[x] + dp[p][x]) % MOD;
+    }
+
+    for (int i = a; i <= n; i++) {
+        for (int j = b; j <= n; j++) {
+            if (i + j > n) continue;
+            ans = (ans + (lt[i] * rt[j]) % MOD) % MOD;
+        }
+    }
+    cout << ans << "\n";
+}
+```
+### 최적화하기
+
+$O(N^3)$도 상수가 작아 AC를 받을 수 있지만, $N$이 커질 경우를 대비해 $O(N^2)$의 최적화를 해보자. 최적화의 주요 아이디어는 미리 합을 계산하자는 것이다. 다시 점화식을 보자.
+
+$$
+dp_{k,x}=\sum_{k^\prime=0}^{k} {dp_{k^\prime,x-2k+k^\prime}}
+$$
+
+이 점화식에서 눈여겨 봐야할 부분은 $k^\prime$과 $x-2k+k^\prime$의 차이가 일정하다는 것이다. 즉, 우리는 
+
+$$
+S_{p, q} := \sum_{k=0}^p {dp_{k, q+k}}
+$$
+
+를 정의한다면, $dp_{k, x}=S_{k, x-2k}$로 구할 수 있다. 또한, 하나의 $dp_{k, x}$가 계산되면 하나의 $S_{k, x-k}$만 계산하면 되고 이 계산도 $O(1)$의 시간복잡도를 가지므로 결과적으로 $dp$ 테이블을 $O(N^2)$의 시간에 완성할 수 있다.
+
+아래는 최적화 된 코드이다. 32ms의 시간으로 AC를 받을 수 있다. 시간이 30배 가량 단축된 것을 볼 수 있다.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MOD = 10301;
+int n, a, b;
+int dp[1010][1010], sum[1010][1010], lt[1010], rt[1010], ans = 0;
+
+int main() {
+    cin >> n >> a >> b;
+
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            dp[i][j] = 0;
+            sum[i][j] = 0;
+        }
+    }
+    dp[a][a] = 1;
+    sum[a][0] = 1;
+    for (int x = a + 1; x <= n; x++) {
+        for (int p = a; p <= x; p++) {
+            dp[p][x] = sum[p][x - 2 * p];
+            sum[p][x - p] = (sum[p - 1][x - p] + dp[p][x]) % MOD;
+        }
+    }
+    for (int x = a; x <= n; x++) {
+        for (int p = 0; p <= x; p++) lt[x] = (lt[x] + dp[p][x]) % MOD;
+    }
+
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            dp[i][j] = 0;
+            sum[i][j] = 0;
+        }
+    }
+    dp[b][b] = 1;
+    sum[b][0] = 1;
+    for (int x = b + 1; x <= n; x++) {
+        for (int p = b; p <= x; p++) {
+            dp[p][x] = sum[p][x - 2 * p];
+            sum[p][x - p] = (sum[p - 1][x - p] + dp[p][x]) % MOD;
+        }
+    }
+    for (int x = b; x <= n; x++) {
+        for (int p = 0; p <= x; p++) rt[x] = (rt[x] + dp[p][x]) % MOD;
+    }
+
+    for (int i = a; i <= n; i++) {
+        for (int j = b; j <= n; j++) {
+            if (i + j > n) continue;
+            ans = (ans + (lt[i] * rt[j]) % MOD) % MOD;
+        }
+    }
+    cout << ans << "\n";
+}
+```
+## 문제 개요
+
+- 문제 번호: 20023번 (https://www.acmicpc.net/problem/18704)
+- 문제 제목: Advertisement Matching
+- 문제 출처: 2020 KAIST 10th ICPC Mock Competition A번 / Open cup 2020/2021 Stage 3 A번
+- 난이도: D4
+- 알고리즘: `#greedy #segment_tree #segment_tree_with_lazy_propagation`
+- 풀이 시간: 88분
+- 문제 요약: $N$ 종류의 광고가 각각 $a_i$개씩 있고, 그 광고를 최대 $b_j$까지 시청할 수 있는 $M$명의 소비자가 있다. 한 소비자는 같은 종류의 광고를 2개 이상 보지 못할 때, 광고를 할당할 수 있는지 판단하여야 한다. 처음 수열 $a_i$와 $b_j$가 주어지고 아래 네 종류의 업데이트 쿼리 $Q$개가 주어질 때, 각 쿼리가 끝난 이후 광고 할당 가능 여부를 출력하라. 단, 변화는 누적된다.
+    - 쿼리 1. $a_i$를 $1$ 증가시킨다.
+    - 쿼리 2. $a_i$를 $1$ 감소시킨다.
+    - 쿼리 3. $b_j$를 $1$ 증가시킨다.
+    - 쿼리 4. $b_j$를 $1$ 감소시킨다.
+- 제약 조건
+    - $1≤N≤250 000$이다.
+    - $1≤M≤250000$이다.
+    - $1≤Q≤250000$이다.
+    - $0≤a_i≤250000$과 $0≤b_i≤250000$을 만족한다.
+    - 각 쿼리가 끝난 이후 $a_i$와 $b_i$가 음 아닌 정수임이 보장된다.
+
+## 만점 풀이
+
+먼저 할당 가능 여부를 정성적으로 분석해보자. 가장 많은 개수가 있는 광고 종류 먼저 배정하여야 하고, 이를 배정하기 위해서는 1개 이상의 광고를 받을 수 있는 소비자의 수가 광고의 수 이상이어야 한다.
+
+이제 두번째로 많은 광고를 배정해보자. 그러면 이제 더 소비자들이 합쳐서 더 받을 수 있는 광고의 수는 남은 소비자 수에 2개 이상의 광고를 받을 수 있는 소비자의 수이다. 이 수의 합이 두 번째로 많은 광고의 개수 이상이면 배정할 수 있다. 이 과정에서 한 사람이 두번째로 많은 광고를 2개 받을 위험이 있지 않냐고 물어볼 수 있지만, 위에서 광고를 배정할 때 광고를 받을 수 있는 개수가 많은 소비자부터 광고를 준다면 절대 그럴 일이 없다. 아래는 이에 대한 증명이다.
+
+- 증명
+    
+    만약 그래야만 한다고 가정해보자. 그렇다면 제일 많은 광고를 받지 못한 사람이 2개 이상의 광고를 받을 수 있으므로 제일 많은 광고를 받은 모든 사람은 2개 이상의 광고를 받을 수 있다.
+    
+    따라서 두번째로 많은 광고의 수는 제일 많은 광고의 수보다 적음이 보장되므로 광고를 받을 수 있는 사람의 수는 두번째로 많은 광고의 수보다 많다. 따라서, 무조건 한 사람에게 2개의 광고가 가지 않는 경우가 존재한다. 따라서 모순이다.
+    
+
+이를 계속 반복하면 계속 광고를 할당할 수 있으며, 중간에 광고를 받을 수 있는 사람의 수보다 광고의 수가 많아진다면 광고를 할당할 수 없는 경우이다.
+
+이를 수학적으로 표현해보자. 주어진 수열 $a_i$와 $b_j$로부터 다음과 같은 길이 $N$의 새로운 자연수열 $p_i$와 $q_j$를 정의하자.
+
+- $p_i$는 수열 $a_i$에서 가장 큰 수 $i$개의 합이다.
+- $q_i$는 $q_i - q_{i-1}$이 수열 $b_j$에서 $i$ 이상의 값의 개수인 수열이다.
+
+위와 같이 정의하면, $p_i$는 $i$번째로 개수가 많은 광고까지 고려했을 때 배정해야 하는 광고의 수, $q_i$는 광고를 받을 수 있는 소비자의 수이다. 즉, 모든 $i (1≤i≤N)$에 대해 $p_i≤q_i$이면 광고 배정이 가능한 것이다.
+
+이를 빠르게 판단하는 방법을 고안해보자. 새로운 수열 $r_i=q_i-p_i$를 생각하자. 
+
+- 초기화: $O(N \log N + N \log M)$의 시간에 $p_i$와 $q_i$를 계산할 수 있다.
+- 업데이트
+    - 쿼리 1. $a_i$가 $1$ 증가하는 경우이다. $p_i$의 정의에 따라 $r_i$는 $a_i$보다 큰 수의 개수를 $s$라 할 때 구간 $[s + 1, N]$에서 $1$ 감소한다.
+    - 쿼리 2. $a_i$가 $1$ 감소하는 경우이다. $p_i$의 정의에 따라 $r_i$는 $a_i$보다 같거나 큰 수의 개수를 $s$라 할 때 구간 $[s, N]$에서 $1$ 감소한다.
+    - 쿼리 3. $b_i$가 1 증가하는 경우이다. $q_i$의 정의에 따라 $r_i$는 구간 $[b_i + 1, N]$에서 $1$ 증가한다.
+    - 쿼리 4. $b_i$가 1 감소하는 경우이다. $q_i$의 정의에 따라 $r_i$는 $[b_i, N]$에서 $1$ 감소한다.
+- 판단: $1≤i≤N$인 $i$에 대하여 $r_i$의 최솟값이 $0$ 이상이면 광고 배정이 가능한 것이다.
+
+$a_i$보다 큰 수의 개수 또는 같거나 큰 수의 개수를 판단하는 것은 $a_i$의 최댓값이 $X+Q$이므로 segment tree를 이용하여 $O(\log (X+Q))$의 시간에 처리할 수 있고, $r_i$의 구간 변경 쿼리와 $r_i$의 최솟값 리턴 쿼리는 segment tree with lazy propagation으로 $O(\log N)$의 시간에 처리할 수 있으므로, 쿼리 1과 쿼리 2는 $O(\log (X+Q) + \log N)$의 시간에, 쿼리 3과 쿼리 4는 $O(\log N)$의 시간에 처리할 수 있다. 여기서 $X$는 처음 $a_i$ 값의 범위이다.
+
+따라서 전체 시간 복잡도는 $O(N \log N + M \log N + Q(\log N + \log (X+Q)))$로 AC를 받을 수 있다. 실제 수행 시간은 400ms 정도이다. 아래 코드에서는 $X+Q$의 값을 $500000$으로 고정하였다.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+int n, m, q, a[252525], b[252525], a2[252525], b2[252525];
+
+ll val[252525], tree[1010101], lazy[1010101];
+
+void init(int v, int st, int ed) {
+    if (st == ed) {
+        tree[v] = val[st];
+        return;
+    }
+    int mid = (st + ed) / 2;
+    init(2 * v, st, mid);
+    init(2 * v + 1, mid + 1, ed);
+    tree[v] = min(tree[2 * v], tree[2 * v + 1]);
+}
+
+void update(int v, int st, int ed, int lt, int rt, ll diff) {
+    if (lazy[v] != 0) {
+        tree[v] += lazy[v];
+        if (st != ed) {
+            lazy[2 * v] += lazy[v];
+            lazy[2 * v + 1] += lazy[v];
+        }
+        lazy[v] = 0;
+    }
+
+    if (ed < lt || st > rt) return;
+    if (lt <= st && ed <= rt) {
+        tree[v] += diff;
+        if (st != ed) {
+            lazy[2 * v] += diff;
+            lazy[2 * v + 1] += diff;
+        }
+        return;
+    }
+    int mid = (st + ed) / 2;
+    update(2 * v, st, mid, lt, rt, diff);
+    update(2 * v + 1, mid + 1, ed, lt, rt, diff);
+    tree[v] = min(tree[2 * v], tree[2 * v + 1]);
+}
+
+ll get(int v, int st, int ed, int lt, int rt) {
+    if (lazy[v] != 0) {
+        tree[v] += lazy[v];
+        if (st != ed) {
+            lazy[2 * v] += lazy[v];
+            lazy[2 * v + 1] += lazy[v];
+        }
+        lazy[v] = 0;
+    }
+
+    if (ed < lt || st > rt) return 1e18;
+    if (lt <= st && ed <= rt) return tree[v];
+    int mid = (st + ed) / 2;
+    return min(get(2 * v, st, mid, lt, rt), get(2 * v + 1, mid + 1, ed, lt, rt));
+}
+
+int cnt[2020202];
+
+void add(int v, int st, int ed, int val) {
+    if (st == val && ed == val) {
+        cnt[v] += 1;
+        return;
+    }
+    if (st > val || ed < val) return;
+    int mid = (st + ed) / 2;
+    add(2 * v, st, mid, val);
+    add(2 * v + 1, mid + 1, ed, val);
+    cnt[v] = cnt[2 * v] + cnt[2 * v + 1];
+}
+
+void del(int v, int st, int ed, int val) {
+    if (st == val && ed == val) {
+        cnt[v] -= 1;
+        return;
+    }
+    if (st > val || ed < val) return;
+    int mid = (st + ed) / 2;
+    del(2 * v, st, mid, val);
+    del(2 * v + 1, mid + 1, ed, val);
+    cnt[v] = cnt[2 * v] + cnt[2 * v + 1];
+}
+
+int _count(int v, int st, int ed, int lt, int rt) {
+    if (ed < lt || st > rt) return 0;
+    if (lt <= st && ed <= rt) return cnt[v];
+    int mid = (st + ed) / 2;
+    return _count(2 * v, st, mid, lt, rt) + _count(2 * v + 1, mid + 1, ed, lt, rt);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) cin >> a[i];
+    for (int i = 1; i <= n; i++) a2[i] = a[i];
+    for (int i = 1; i <= m; i++) cin >> b[i];
+    for (int i = 1; i <= m; i++) b2[i] = b[i];
+
+    sort(a + 1, a + n + 1, greater<int>());
+    sort(b + 1, b + m + 1);
+    int temp = 0;
+    for (int i = 1; i <= n; i++) {
+        temp += a[i];
+        val[i] -= temp;
+        add(1, 1, 500000, a[i]);
+    }
+    temp = 0;
+    for (int i = 1; i <= n; i++) {
+        int st = lower_bound(b + 1, b + m + 1, i) - b;
+        temp += (m - st + 1);
+        val[i] += temp;
+    }
+    for (int i = 1; i <= n; i++) a[i] = a2[i];
+    for (int i = 1; i <= m; i++) b[i] = b2[i];
+
+    init(1, 1, n);
+
+    cin >> q;
+    while (q--) {
+        int t, idx;
+        cin >> t >> idx;
+        if (t == 1) {
+            int st = _count(1, 1, 500000, a[idx] + 1, 500000) + 1;
+            del(1, 1, 500000, a[idx]);
+            add(1, 1, 500000, a[idx] + 1);
+            a[idx] += 1;
+            update(1, 1, n, st, n, -1);
+        }
+        if (t == 2) {
+            int st = _count(1, 1, 500000, a[idx], 500000);
+            del(1, 1, 500000, a[idx]);
+            add(1, 1, 500000, a[idx] - 1);
+            a[idx] -= 1;
+            update(1, 1, n, st, n, +1);
+        }
+        if (t == 3) {
+            b[idx] += 1;
+            update(1, 1, n, b[idx], n, +1);
+        }
+        if (t == 4) {
+            b[idx] -= 1;
+            update(1, 1, n, b[idx] + 1, n, -1);
+        }
+        cout << (get(1, 1, n, 1, n) >= 0 ? "1\n" : "0\n");
+    }
+
+    return 0;
+}
+```
