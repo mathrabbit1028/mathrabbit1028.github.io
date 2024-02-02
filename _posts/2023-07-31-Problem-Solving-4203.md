@@ -9,7 +9,7 @@ excerpt_separator: <!--more-->
 
 문제 번호: 4203(D1)
 
-excerpt_separator: <!--more-->
+<!--more-->
 
 ## 문제 개요
 
