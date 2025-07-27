@@ -4,6 +4,7 @@ author: Mingeon Jeong
 date: 2025-03-09 21:53:00 +0900
 categories: [Randomized Algorithms]
 tags: [algorithm]
+math: true
 ---
 
 # Introduction
