@@ -1,33 +1,43 @@
 <!-- Navigation buttons at the bottom of the post. -->
 
 <nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation">
-  {% assign previous = site.data.locales[include.lang].post.button.previous %}
-  {% assign next = site.data.locales[include.lang].post.button.next %}
+  {% assign previous_label = site.data.locales[include.lang].post.button.previous %}
+  {% assign next_label = site.data.locales[include.lang].post.button.next %}
 
-  {% if page.previous.url %}
+  {% assign current_category = page.categories[0] %}
+  {% assign same_category_posts = site.posts | where_exp: "post", "post.categories contains current_category" | sort: "date" %}
+  {% assign index = same_category_posts | index_of: page %}
+
+  {% assign prev_index = index | minus: 1 %}
+  {% assign next_index = index | plus: 1 %}
+
+  {% assign prev_post = same_category_posts[prev_index] %}
+  {% assign next_post = same_category_posts[next_index] %}
+
+  {% if prev_post %}
     <a
-      href="{{ site.baseurl }}{{ page.previous.url }}"
+      href="{{ site.baseurl }}{{ prev_post.url }}"
       class="btn btn-outline-primary"
-      aria-label="{{ previous }}"
+      aria-label="{{ previous_label }}"
     >
-      <p>{{ page.previous.title }}</p>
+      <p>{{ prev_post.title }}</p>
     </a>
   {% else %}
-    <div class="btn btn-outline-primary disabled" aria-label="{{ previous }}">
+    <div class="btn btn-outline-primary disabled" aria-label="{{ previous_label }}">
       <p>-</p>
     </div>
   {% endif %}
 
-  {% if page.next.url %}
+  {% if next_post %}
     <a
-      href="{{ site.baseurl }}{{page.next.url}}"
+      href="{{ site.baseurl }}{{ next_post.url }}"
       class="btn btn-outline-primary"
-      aria-label="{{ next }}"
+      aria-label="{{ next_label }}"
     >
-      <p>{{ page.next.title }}</p>
+      <p>{{ next_post.title }}</p>
     </a>
   {% else %}
-    <div class="btn btn-outline-primary disabled" aria-label="{{ next }}">
+    <div class="btn btn-outline-primary disabled" aria-label="{{ next_label }}">
       <p>-</p>
     </div>
   {% endif %}
