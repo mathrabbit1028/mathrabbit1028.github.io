@@ -1,7 +1,7 @@
 ---
 title: Dynamic Programming in RL [Reinforcement Learning]
 author: mathrabbit
-date: 2025-05-20312:00:00 +0900
+date: 2025-05-03 12:00:00 +0900
 categories: [Reinforcement Learning]
 tags: [ai]
 pin: true
