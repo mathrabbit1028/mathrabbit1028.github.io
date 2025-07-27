@@ -1,22 +1,17 @@
 ---
 title: Introduction [Randomized Algorithms]
-author: Mingeon Jeong
+author: mathrabbit
 date: 2025-03-09 21:53:00 +0900
 categories: [Randomized Algorithms]
 tags: [algorithm]
 math: true
 ---
 
+Randomized Algorithms 1장
+
+<!--more-->
+
 # Introduction
-
-## Brief summary
-
-- RandQS
-- Min-Cut
-- Las Vegas and Monte Carlo
-- Binary Planar Partitions
-- Probabilistic Recurrence
-- Analysis in terms of Computation & Complexity Theory
 
 ### RandQS
     
@@ -92,19 +87,21 @@ $$
 - 다음 알고리즘을 생각하자
 
 ---
+
 주어진 선분 집합을 $S = \{ s_1, s_2, \cdots, s_n \}$이라 하자.
 
 1. 길이 $n$의 순열 $\pi$을 하나 잡는다.
 2. **(while)** 둘 이상의 선분을 포함하는 영역 $R$이 존재하면, 선분 $s_i$를 포함하는 선을 경계로 그어 $R$을 둘로 나눈다. 여기서 $i$는 $s_i$가 영역 $R$을 나누면서 $\pi$에서 가장 앞에 등장하는 숫자이다.
 
-* 경계와 일치하는 선분은 위든 아래든 한 곳으로 정해서 포함시킨다 *
+이때, 경계와 일치하는 선분은 위든 아래든 한 곳으로 정해서 포함시킨다.
+
 ---
 
 - 위와 같은 알고리즘을 고안하면, 선분 $v$는 다른 선분 $u$를 포함하는 반직선에 의해서만 잘릴 수 있다. 즉, 선분이 잘리는 횟수는 최악에 $O(n^2)$번이고, 영역의 개수도 최악에 $O(n^2)$개이다.
 - 또한, 영역 개수의 기댓값은 $O(n \log n)$이다.
     - 위의 알고리즘을 시행한 후의 결과를 보면, 선분 $v$는 다른 선분 $u$를 포함하는 반직선에 의해서만 잘릴 수 있기 때문에, 다음 함수를 정의할 수 있다.
         
-        $index(u, v)$를 $u$를 포함하는 반직선이 $v$를 몇 번째로 잘랐는지로 한다. 자르지 않았으면 $\infty$이다.
+        <center> $index(u, v)$를 $u$를 포함하는 반직선이 $v$를 몇 번째로 잘랐는지로 한다. 자르지 않았으면 $\infty$이다. </center>
         
     - 이제, $u$가 $u_1, u_2, \cdots, u_{k-1}$을 자르고 $v$를 자를 확률을 생각해보자. $\pi$에서 가장 앞에 등장하는 숫자를 인덱스로 가지는 선분으로 자르기 때문에, $u$가 $u, u_1, u_2, \cdots, u_{k-1}, v$ 중에서 가장 앞에 등장해야 한다. 이 확률은 $1/(k+1)$이다.
     - 즉, $u$가 자르는 선분의 개수가 많아질수록, 선분을 하나 더 자를 확률은 줄어들게 된다.
