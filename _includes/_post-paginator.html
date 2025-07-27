@@ -3,8 +3,6 @@
 <nav aria-label="Page Navigation">
   <ul class="pagination align-items-center mt-4 mb-0">
     <!-- left arrow -->
-    {% assign total_pages = all_pinned.size | divided_by: paginator.per_page %}
-
     {% if paginator.previous_page %}
       {% assign prev_url = paginator.previous_page_path | relative_url %}
     {% else %}
@@ -21,7 +19,7 @@
     {% assign left_ellipsis = false %}
     {% assign right_ellipsis = false %}
 
-    {% for i in (1..total_pages) %}
+    {% for i in (1..paginator.total_pages) %}
       {% assign pre = paginator.page | minus: 1 %}
       {% assign next = paginator.page | plus: 1 %}
       {% assign pre_less = pre | minus: 1 %}
@@ -29,15 +27,15 @@
       {% assign show = false %}
 
       {% if paginator.page == 1 %}
-        {% if i <= 3 or i == total_pages %}
+        {% if i <= 3 or i == paginator.total_pages %}
           {% assign show = true %}
         {% endif %}
-      {% elsif paginator.page == total_pages %}
+      {% elsif paginator.page == paginator.total_pages %}
         {% if i == 1 or i >= pre_less %}
           {% assign show = true %}
         {% endif %}
       {% else %}
-        {% if i == 1 or i == total_pages %}
+        {% if i == 1 or i == paginator.total_pages %}
           {% assign show = true %}
         {% elsif i >= pre and i <= next %}
           {% assign show = true %}
@@ -73,7 +71,7 @@
     <!-- mobile pagination -->
     <li class="page-index align-middle">
       <span>{{ paginator.page }}</span>
-      <span class="text-muted">/ {{ total_pages }}</span>
+      <span class="text-muted">/ {{ paginator.total_pages }}</span>
     </li>
 
     <!-- right arrow -->

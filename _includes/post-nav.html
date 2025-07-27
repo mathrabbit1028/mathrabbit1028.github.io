@@ -2,7 +2,7 @@
   {% assign current_category = page.categories[0] %}
 
   {% assign prev_post = nil %}
-  {% for post in site.posts reversed %}
+  {% for post in site.posts %}
     {% if post.date < page.date and post.categories contains current_category %}
       {% assign prev_post = post %}
       {% break %}
@@ -10,7 +10,7 @@
   {% endfor %}
 
   {% assign next_post = nil %}
-  {% for post in site.posts %}
+  {% for post in site.posts reversed %}
     {% if post.date > page.date and post.categories contains current_category %}
       {% assign next_post = post %}
       {% break %}

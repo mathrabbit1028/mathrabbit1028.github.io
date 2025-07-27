@@ -6,7 +6,6 @@ refactor: true
 {% include lang.html %}
 
 {% assign all_pinned = site.posts | where: 'pin', 'true' %}
-{% assign all_normal = site.posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
 
 {% assign posts = '' | split: '' %}
 
@@ -98,6 +97,7 @@ refactor: true
 </div>
 <!-- #post-list -->
 
-{% if paginator.total_pages > 1 %}
+{% assign total_pages = all_pinned.size | divided_by: paginator.per_page %}
+{% if total_pages > 1 %}
   {% include post-paginator.html %}
 {% endif %}
