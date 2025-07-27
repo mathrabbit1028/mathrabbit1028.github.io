@@ -40,6 +40,52 @@
     </ul>
   </nav>
 
+  <style>
+    .custom-contents {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .custom-contents h3 {
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+      color: var(--text-color, #333);
+    }
+
+    .custom-contents ul {
+      list-style: none;
+      padding-left: 0.5rem;
+    }
+
+    .custom-contents li {
+      margin: 0.2rem 0;
+    }
+
+    .custom-contents ul ul {
+      padding-left: 1rem;
+    }
+  </style>
+
+  <div class="custom-contents">
+    <h3>Contents</h3>
+    <ul>
+      <li>🟡 Problem Solving
+        <ul>
+          <li>🟢 CEOI</li>
+          <li>🟢 IOI</li>
+          <li>🟢 KTSC</li>
+          <li>🔴 KOI</li>
+          <li>🔴 NYPC</li>
+          <li>🟡 UCPC</li>
+        </ul>
+      </li>
+      <li>🔵 Statistics</li>
+      <li>🟡 Reinforcement Learning</li>
+      <li>🟡 Randomized Algorithms</li>
+      <li>🔵 Deep Learning Architectures</li>
+    </ul>
+  </div>
+
   <div class="sidebar-bottom d-flex flex-wrap  align-items-center w-100">
     {% unless site.theme_mode %}
       <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle">
@@ -91,36 +137,6 @@
         </a>
       {% endif %}
     {% endfor %}
-  </div>
-  <div class="custom-labels">
-    <h3>Label:</h3>
-    <ul>
-      <li>🟢 : Completed</li>
-      <li>🟡 : Progressing</li>
-      <li>🔴 : Abandoned</li>
-      <li>🔵 : Planned</li>
-    </ul>
-  </div>
-
-  <!-- <div class="custom-contents">
-    <h3>Contents</h3>
-    <ul>
-      <li>🟡 <a href="/categories/problem-solving/">Problem Solving</a>
-        <ul>
-          <li>🟢 <a href="/categories/problem-solving/ceoi/">CEOI</a></li>
-          <li>🟢 <a href="/categories/problem-solving/ioi/">IOI</a></li>
-          <li>🟢 <a href="/categories/problem-solving/ktsc/">KTSC</a></li>
-          <li>🔴 <a href="/categories/problem-solving/koi/">KOI</a></li>
-          <li>🔴 <a href="/categories/problem-solving/nypc/">NYPC</a></li>
-          <li>🟡 <a href="/categories/problem-solving/ucpc/">UCPC</a></li>
-        </ul>
-      </li>
-      <li>🔵 <a href="/categories/statistics/">Statistics</a></li>
-      <li>🟡 <a href="/categories/reinforcement-learning/">Reinforcement Learning</a></li>
-      <li>🟡 <a href="/categories/randomized-algorithms/">Randomized Algorithms</a></li>
-      <li>🔵 <a href="/categories/deep-learning-architectures/">Deep Learning Architectures</a></li>
-    </ul>
-  </div> -->
   <!-- .sidebar-bottom -->
 </aside>
 <!-- #sidebar -->
