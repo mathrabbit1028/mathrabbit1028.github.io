@@ -1,20 +1,29 @@
-<!-- Navigation buttons at the bottom of the post. -->
-
 <nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation">
-  {% assign previous_label = site.data.locales[include.lang].post.button.previous %}
-  {% assign next_label = site.data.locales[include.lang].post.button.next %}
-
   {% assign current_category = page.categories[0] %}
-  {% assign same_category_posts = site.posts | where_exp: "post", "post.categories contains current_category" | sort: "date" %}
-  {% assign index = same_category_posts | index_of: page %}
+  {% assign previous = site.data.locales[include.lang].post.button.previous %}
+  {% assign next = site.data.locales[include.lang].post.button.next %}
 
-  {% assign prev_index = index | minus: 1 %}
-  {% assign next_index = index | plus: 1 %}
+  {% assign prev_post = page.previous %}
+  {% assign found_prev = false %}
+  {% while prev_post and found_prev == false %}
+    {% if prev_post.categories contains current_category %}
+      {% assign found_prev = true %}
+    {% else %}
+      {% assign prev_post = prev_post.previous %}
+    {% endif %}
+  {% endwhile %}
 
-  {% assign prev_post = same_category_posts[prev_index] %}
-  {% assign next_post = same_category_posts[next_index] %}
+  {% assign next_post = page.next %}
+  {% assign found_next = false %}
+  {% while next_post and found_next == false %}
+    {% if next_post.categories contains current_category %}
+      {% assign found_next = true %}
+    {% else %}
+      {% assign next_post = next_post.next %}
+    {% endif %}
+  {% endwhile %}
 
-  {% if prev_post %}
+  {% if found_prev %}
     <a
       href="{{ site.baseurl }}{{ prev_post.url }}"
       class="btn btn-outline-primary"
@@ -28,7 +37,7 @@
     </div>
   {% endif %}
 
-  {% if next_post %}
+  {% if found_next %}
     <a
       href="{{ site.baseurl }}{{ next_post.url }}"
       class="btn btn-outline-primary"
