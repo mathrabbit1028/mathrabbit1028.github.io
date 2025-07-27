@@ -64,26 +64,39 @@
     .custom-contents ul ul {
       padding-left: 1rem;
     }
+
+    .custom-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 30vh;
+      padding: 1rem;
+      overflow-y: auto;
+      background-color: #f9f9f9;
+      border-right: 1px solid #ccc;
+      z-index: 1000;
+    }
   </style>
 
-  <div class="custom-contents">
-    <h3>Contents</h3>
-    <ul>
-      <li>🟡 Problem Solving
-        <ul>
-          <li>🟢 CEOI</li>
-          <li>🟢 IOI</li>
-          <li>🟢 KTSC</li>
-          <li>🔴 KOI</li>
-          <li>🔴 NYPC</li>
-          <li>🟡 UCPC</li>
-        </ul>
-      </li>
-      <li>🔵 Statistics</li>
-      <li>🟡 Reinforcement Learning</li>
-      <li>🟡 Randomized Algorithms</li>
-      <li>🔵 Deep Learning Architectures</li>
-    </ul>
+  <div class="custom-sidebar">
+    <div class="custom-contents">
+      <ul>
+        <li>🟡 Problem Solving
+          <ul>
+            <li>🟢 CEOI</li>
+            <li>🟢 IOI</li>
+            <li>🟢 KTSC</li>
+            <li>🔴 KOI</li>
+            <li>🔴 NYPC</li>
+            <li>🟡 UCPC</li>
+          </ul></li>
+        <li>🔵 Statistics</li>
+        <li>🟡 Reinforcement Learning</li>
+        <li>🟡 Randomized Algorithms</li>
+        <li>🔵 Deep Learning Architectures</li>
+      </ul>
+    </div>
   </div>
 
   <div class="sidebar-bottom d-flex flex-wrap  align-items-center w-100">
