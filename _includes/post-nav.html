@@ -1,35 +1,32 @@
 <nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation">
   {% assign current_category = page.categories[0] %}
-  {% assign previous = site.data.locales[include.lang].post.button.previous %}
-  {% assign next = site.data.locales[include.lang].post.button.next %}
 
-  {% assign prev_post = page.previous %}
-  {% assign found_prev = false %}
-  {% while prev_post and found_prev == false %}
-    {% if prev_post.categories contains current_category %}
-      {% assign found_prev = true %}
-    {% else %}
-      {% assign prev_post = prev_post.previous %}
+  {% assign prev_post = nil %}
+  {% for post in site.posts reversed %}
+    {% if post.date < page.date and post.categories contains current_category %}
+      {% assign prev_post = post %}
+      {% break %}
     {% endif %}
-  {% endwhile %}
+  {% endfor %}
 
-  {% assign next_post = page.next %}
-  {% assign found_next = false %}
-  {% while next_post and found_next == false %}
-    {% if next_post.categories contains current_category %}
-      {% assign found_next = true %}
-    {% else %}
-      {% assign next_post = next_post.next %}
+  {% assign next_post = nil %}
+  {% for post in site.posts %}
+    {% if post.date > page.date and post.categories contains current_category %}
+      {% assign next_post = post %}
+      {% break %}
     {% endif %}
-  {% endwhile %}
+  {% endfor %}
 
-  {% if found_prev %}
+  {% assign previous_label = site.data.locales[include.lang].post.button.previous %}
+  {% assign next_label = site.data.locales[include.lang].post.button.next %}
+
+  {% if prev_post %}
     <a
       href="{{ site.baseurl }}{{ prev_post.url }}"
       class="btn btn-outline-primary"
       aria-label="{{ previous_label }}"
     >
-      <p>{{ prev_post.title }}</p>
+      <p>{{ prev_post .title }}</p>
     </a>
   {% else %}
     <div class="btn btn-outline-primary disabled" aria-label="{{ previous_label }}">
@@ -37,7 +34,7 @@
     </div>
   {% endif %}
 
-  {% if found_next %}
+  {% if next_post %}
     <a
       href="{{ site.baseurl }}{{ next_post.url }}"
       class="btn btn-outline-primary"
