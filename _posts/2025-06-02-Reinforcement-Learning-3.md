@@ -4,7 +4,6 @@ author: mathrabbit
 date: 2025-06-02 12:00:00 +0900
 categories: [Reinforcement Learning]
 tags: [ai]
-pin: true
 ---
 
 강화학습 3주차 : 시간차 학습

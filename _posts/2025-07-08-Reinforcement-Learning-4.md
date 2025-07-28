@@ -4,7 +4,6 @@ author: mathrabbit
 date: 2025-07-08 12:00:00 +0900
 categories: [Reinforcement Learning]
 tags: [ai]
-pin: true
 ---
 
 강화학습 4주차 : 인공신경망의 사용
