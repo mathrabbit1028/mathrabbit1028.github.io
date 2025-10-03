@@ -11,5 +11,5 @@
 
 - 🟢 : Completed
 - 🟡 : Progressing
-- 🔴 : Abandoned
-- 🔵 : Planned
+- 🔴 : Planned
+- ⚫ : Abandoned

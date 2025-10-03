@@ -16,7 +16,7 @@ timezone: Asia/Seoul
 
 title: mathrabbit-eTL # the main title
 
-tagline: SSHS 34 / SNU CSE 25 # it will display as the subtitle
+tagline: SNU CSE 25 # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   A minimal, responsive and feature-rich Jekyll theme for technical writing.
