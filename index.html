@@ -1,4 +1,308 @@
----
-layout: home
-# Index page
----
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Personal homepage of Mingeon Jeong">
+    <title>Mingeon Jeong</title>
+    <link rel="stylesheet" href="https://latex.vercel.app/style.css">
+    <style>
+      :root {
+        --body-max-width: 80ch;
+      }
+
+      body {
+        padding-top: 2rem;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        margin-bottom: 4rem;
+        font-size: 0.9rem;
+      }
+
+      nav p {
+        margin: 0;
+      }
+
+      nav .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+      }
+
+      header {
+        margin-bottom: 3rem;
+      }
+
+      header h1 {
+        margin-bottom: 0.4rem;
+      }
+
+      .contact {
+        margin: 0;
+        text-align: center;
+      }
+
+      .updated {
+        margin-top: 0.4rem;
+        color: #555;
+        font-size: 0.85rem;
+        text-align: center;
+      }
+
+      section {
+        margin-top: 3.2rem;
+      }
+
+      section > h2 {
+        border-bottom: 1px solid currentColor;
+        padding-bottom: 0.2rem;
+      }
+
+      .entry {
+        display: grid;
+        grid-template-columns: 8rem minmax(0, 1fr);
+        column-gap: 1.5rem;
+        margin: 1.4rem 0;
+      }
+
+      .entry time,
+      .entry .label {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .entry p {
+        margin: 0.25rem 0;
+      }
+
+      .entry-title {
+        margin-top: 0 !important;
+      }
+
+      .subsection {
+        margin-top: 2rem;
+        font-variant: small-caps;
+        letter-spacing: 0.04em;
+      }
+
+      footer {
+        margin-top: 5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #aaa;
+        font-size: 0.85rem;
+        text-align: center;
+      }
+
+      @media print {
+        nav,
+        footer {
+          display: none;
+        }
+
+        body {
+          padding-top: 0;
+        }
+
+        a {
+          color: inherit;
+        }
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 1.2rem;
+        }
+
+        nav {
+          align-items: flex-start;
+          flex-direction: column;
+          margin-bottom: 3rem;
+        }
+
+        .entry {
+          grid-template-columns: 1fr;
+          row-gap: 0.2rem;
+        }
+
+        .entry time,
+        .entry .label {
+          font-weight: bold;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav aria-label="Primary navigation">
+      <p><strong>Mingeon Jeong</strong></p>
+      <div class="links">
+        <a href="#education">Education</a>
+        <a href="#research">Research</a>
+        <a href="#awards">Awards</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+      </div>
+    </nav>
+
+    <main>
+      <header>
+        <h1>Mingeon Jeong</h1>
+        <p class="author">Student and Researcher</p>
+        <p class="contact">
+          <a href="mailto:math_rabbit_1028@snu.ac.kr">math_rabbit_1028@snu.ac.kr</a>
+          ·
+          <a href="mailto:geon4096@gmail.com">geon4096@gmail.com</a>
+          ·
+          <a href="https://github.com/mathrabbit1028">GitHub</a>
+        </p>
+        <p class="updated">Last updated: July 26, 2026</p>
+      </header>
+
+      <div class="abstract">
+        <h2>Profile</h2>
+        <p>
+          Undergraduate student at Seoul National University studying Computer
+          Science and Engineering and Economics, with research interests in
+          algorithms, data structures, reinforcement learning, and artificial
+          intelligence.
+        </p>
+      </div>
+
+      <section id="education">
+        <h2>Education</h2>
+
+        <article class="entry">
+          <time>2026 — Present</time>
+          <div>
+            <p class="entry-title"><strong>Double Major in Economics, Seoul National University</strong></p>
+            <p>Seoul, South Korea. Currently enrolled; expected graduation in 2029.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <time>2025 — Present</time>
+          <div>
+            <p class="entry-title"><strong>B.Sc. in Computer Science and Engineering, Seoul National University</strong></p>
+            <p>Seoul, South Korea. Currently enrolled; expected graduation in 2029.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <time>2022 — 2024</time>
+          <div>
+            <p class="entry-title"><strong>Seoul Science High School</strong></p>
+            <p>Seoul, South Korea. Graduated; admitted one year early to high school.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="research">
+        <h2>Research</h2>
+
+        <article class="entry">
+          <time>Jan — Jul 2026</time>
+          <div>
+            <p class="entry-title"><strong>Research Internship, Algorithmic Foundations of Data Science Lab</strong></p>
+            <p>Seoul National University.</p>
+            <p><strong>First author.</strong> <em>Can MCTS Help FPT? From Plain Branching to Crown-Enabled Exact Search.</em> Submitted to KDD 2026; under review.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <time>2024</time>
+          <div>
+            <p class="entry-title"><strong>Combat Simulation Algorithm Using Monte Carlo Tree Search</strong></p>
+            <p>Graduation research at Seoul Science High School. Excellent Research Prize.</p>
+            <p><a href="https://github.com/mathrabbit1028/war">Source code</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <time>2022 — 2024</time>
+          <div>
+            <p class="entry-title"><strong>BunnySort: A New Sorting Algorithm for Certain Distributions of Data</strong></p>
+            <p>Presented at the KSEF National Finals. Silver Award.</p>
+            <p><a href="https://github.com/mathrabbit1028/newSTLcontainer">Source code</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <time>2023</time>
+          <div>
+            <p class="entry-title"><strong>Efficient and Rapid Grid Voronoi Diagram Computation</strong></p>
+            <p>R&amp;E Undergraduate-Level Research Program, Seoul Science High School, with the Department of Mathematics, Korea University.</p>
+            <p><a href="https://github.com/mathrabbit1028/grid-voronoi">Source code</a></p>
+          </div>
+        </article>
+      </section>
+
+      <section id="awards">
+        <h2>Awards and Certifications</h2>
+        <h3 class="subsection">Awards</h3>
+
+        <article class="entry"><time>2025</time><p class="entry-title"><strong>ICPC Seoul Regional Finalist</strong> — Qualified for the regional finals.</p></article>
+        <article class="entry"><time>2025</time><p class="entry-title"><strong>10th NYPC Code Battle Finalist</strong> — Top 1.17% in preliminaries.</p></article>
+        <article class="entry"><time>2024</time><p class="entry-title"><strong>Asia-Pacific Olympiad in Informatics</strong> — Silver Medal.</p></article>
+        <article class="entry"><time>2024</time><p class="entry-title"><strong>Korea IOI National Team Selection Contest</strong> — Ranked 9th.</p></article>
+        <article class="entry"><time>2024</time><p class="entry-title"><strong>21st KSEF National Finals</strong> — Silver Award.</p></article>
+        <article class="entry"><time>2022</time><p class="entry-title"><strong>7th NYPC 1519 Division Finalist</strong> — Top 60 in preliminaries.</p></article>
+        <article class="entry"><time>2021</time><p class="entry-title"><strong>KOI Round 2, Middle School Division</strong> — Silver Award; 7th place.</p></article>
+
+        <h3 class="subsection">Certifications</h3>
+        <article class="entry"><time>2025 — 2029</time><p class="entry-title"><strong>Presidential Science Scholarship</strong> — Korea Student Aid Foundation.</p></article>
+        <article class="entry"><time>2024</time><p class="entry-title"><strong>Olympiad in Informatics Winter School 2023</strong> — Completed.</p></article>
+        <article class="entry"><time>2023</time><p class="entry-title"><strong>Olympiad in Informatics Summer School 2023</strong> — Completed.</p></article>
+      </section>
+
+      <section id="projects">
+        <h2>Projects</h2>
+
+        <article class="entry">
+          <time>2026</time>
+          <div>
+            <p class="entry-title"><strong>1st SUMMA Cultural Foundation NEXT ARTIST</strong></p>
+            <p>Selected for artistic project funding.</p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <time>2025 — Present</time>
+          <div>
+            <p class="entry-title"><strong>Writing an Olympiad Informatics Textbook in Korean</strong></p>
+            <p>Authoring a textbook introducing algorithms and problem-solving strategies to students in Korea.</p>
+            <p><a href="https://github.com/mathrabbit1028/PS-book">Source repository</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <time>2025</time>
+          <div>
+            <p class="entry-title"><strong>Reinforcement Learning Seminar</strong></p>
+            <p>An in-depth seminar covering core theoretical foundations and recent research advances.</p>
+            <p><a href="https://drive.google.com/drive/folders/1WgwmgQSGXNg4_ve3nsloNxY8pwiVHRGZ?usp=sharing">Presentation materials</a></p>
+          </div>
+        </article>
+      </section>
+
+      <section id="skills">
+        <h2>Skills</h2>
+        <article class="entry">
+          <span class="label">Programming</span>
+          <p class="entry-title"><strong>C, C++, Python</strong>, Rust, Java, Kotlin, LaTeX.</p>
+        </article>
+        <article class="entry">
+          <span class="label">Fields</span>
+          <p class="entry-title"><strong>Algorithms, Data Structures</strong>, Reinforcement Learning, Artificial Intelligence.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <p>Typeset for the web with <a href="https://latex.vercel.app/">LaTeX.css</a>.</p>
+    </footer>
+  </body>
+</html>

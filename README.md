@@ -1,15 +1,11 @@
-# mathrabbit-eTL
+# Mingeon Jeong — Personal Homepage
 
-![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)
-![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)
+LaTeX.css를 사용하는 개인 소개용 단일 정적 HTML 페이지입니다. 별도의 Jekyll 빌드가 필요하지 않습니다.
 
-> Learning without thought is **useless**. Thought without learning is **dangerous**.
+로컬에서는 저장소 루트에서 다음 명령을 실행하세요.
 
-**수학토끼의 e-Teaching & Learning 블로그**
+```bash
+python3 -m http.server 8000
+```
 
-"int main()" 포스트에서 블로그에 포함된 토픽들과 현재 상태를 확인할 수 있습니다.
-
-- 🟢 : Completed
-- 🟡 : Progressing
-- 🔴 : Planned
-- ⚫ : Abandoned
+그다음 `http://localhost:8000`으로 접속하면 됩니다.
